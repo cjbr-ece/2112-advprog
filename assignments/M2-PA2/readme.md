@@ -28,7 +28,7 @@ All the problems contained in this files are:
 ```
 Once that was done I simply used the normalize function and loaded the file for the print case.
 ```
-    # Normalization Code Snippet
+    # Print Snippet
     normalize(X) # Test Case
     print(np.load('X_normalized.npy')) # Print to simply see the saved file using np.load.
 ```
@@ -66,3 +66,4 @@ The organization of this repository to get to this file is as follows:
 
 # ⬇️Download Instructions⬇️
 Download or clone this repository to get the files. Then using either Jupyter notebook or through the Jupyter addon on Visual Studio Code, open the file and run the cells of concern.
+
