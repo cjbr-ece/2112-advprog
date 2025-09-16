@@ -1,8 +1,3 @@
-
-# Project Title
-
-A brief description of what this project does and who it's for
-
  # ✏️PA2 - Readme✏️
 
 This folder contains all the files required for the second programming assignment, for the topic Numerical Python.
@@ -66,4 +61,5 @@ The organization of this repository to get to this file is as follows:
 
 # ⬇️Download Instructions⬇️
 Download or clone this repository to get the files. Then using either Jupyter notebook or through the Jupyter addon on Visual Studio Code, open the file and run the cells of concern.
+
 
