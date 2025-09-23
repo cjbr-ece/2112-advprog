@@ -63,9 +63,9 @@ All the problems contained in this files are:
 ```
 - However, the problem requires us to find a correlation between the features of Gender, Track, and Hometown to the students final grade. Doing a cursory search on the internet and through our cheat sheets led me to the Pandas documentation website:
 
-https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html
-https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html#pandas.factorize
-https://pandas.pydata.org/docs/dev/reference/api/pandas.DataFrame.corrwith.html#pandas.DataFrame.corrwith
+		  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html
+		  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html#pandas.factorize
+		  https://pandas.pydata.org/docs/dev/reference/api/pandas.DataFrame.corrwith.html#pandas.DataFrame.corrwith
 
 - Through these resources I opted to create a Pearson's correlation value for each of the categories using the .corrwith function. However, I initially ran into issues as the values were not intgers. This is where I learned the .apply function in the cheat sheets and the factorize function in the Pandas documentation, which converts non-integer values into indexed values that can be used with the .corrwith function. Once I had my correlation values I simply displayed the function for us to get a better understanding of what the correlation values are and what values are attached to them.
 ```
@@ -102,6 +102,7 @@ The organization of this repository to get to this file is as follows:
 
 # ⬇️Download Instructions⬇️
 Download or clone this repository to get the files. Then using either Jupyter notebook or through the Jupyter addon on Visual Studio Code, open the file and run the cells of concern.
+
 
 
 
