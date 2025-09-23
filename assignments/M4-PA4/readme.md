@@ -17,68 +17,76 @@ All the problems contained in this files are:
     import pandas as pd # Importing pandas library
     import matplotlib.pyplot as plt # Importing plotting/visualization library
 
+```
     # Read from file Snippet
     df = pd.read_excel('board2.xlsx')
     df # Display unaltered file
 ```
--  For part a, we can simply save to a new DataFrame called head and using the .head() function to get the first 5 entries.
+-  For Problem 1 - Data frame 1, I simply used the .loc function to our initial data set to splice a specific subset of the df data frame. To create our splicing parameters, we use the & or and sign to combine multiple parameter checks. So simply we test for all entries with hometowns in Visayas AND their grades are less than 70 in Math. Finally, we simply format the final table according to the sample output and display it.
 ```
-    # Part A Snippet
-    head = cars.head() # The head function simply retrieves the first 5 values, and we can save it to the name head
-    head # Display of test case
-```
-- Similarly, we can simply save to another DataFrame named tail and use the .tail() function to get the last 5 entries.
-```
-    # Part B Snippet
-    tail = cars.tail() # The tail function simply retrieves the last 5 values, and we can save it to the name tail
-    tail # Display of test case
-```
-- Finally, I decided to export all the DataFrames back out labeled with head_ and tail_.
-```
-    # Exporting to file Snippet
-    head.to_csv('head_Rivera_Pandas-P1.csv')
-    tail.to_csv('tail_Rivera_Pandas-P1.csv')
-```
+    # Data Frame 1 Snippet
+    Vis = df.loc[(df['Hometown'] == 'Visayas') & # Using splicing, find all entries where hometown is Visayas.
+                (df['Math'] < 70) # Using & (AND), additionally find only entries with Math grade less than 70.
+                , ['Name', 'Gender', 'Track', 'Math']] # Formatting options to match sample output.
 
+    Vis # Display first Data Frame
+```
+-  For Problem 1 - Data frame 2, I used the same structure again. We splice by checking for the track, hometown, and grade of electronics as required by the problem description. Then we simply format again and store the data frame in Instru and display the table.
+```
+    # Data Frame 2 Snippet
+    Instru = df.loc[(df['Track'] == 'Instrumentation') & # Test for entries where Track is Instrumentation.
+             (df['Hometown'] == 'Luzon') & # Using & (AND), additionally test for entries where Hometown is Luzon.
+             (df['Electronics'] > 70) # # Finally, using & (AND), additionally test for entries where the Electronics grade is greater than 70.
+             , ['Name', 'GEAS', 'Electronics']] # Formatting options to match sample output.
+
+    Instru # Display second Data Frame
+```
+-  Finally, for Problem 1 - Data frame 3, We have to intreoduce a new category that is not in the original data set. Because of this, I generally opt to copy the original data frame and modify it to add the average column as opposed to directly adding it to the original data set. Once I have copied the data frame, we can create the average column by using the .mean Pandas function with the axis set to one to get the average according to the vertical (column) of each grade. Once we've added the average column to our dataframe, we can simply use .loc to splice data according to the problem description, which is searching for Female students from Mindanao with an average grade greater than 55. We apply formatting once again and then display the problem.
+```
+    # Data Frame 3 Snippet
+    Mindy = df.copy() # Create a copy of the base DataFrame to avoid creating columns that do not exist in the original data set.
+    Mindy['Average'] = df[['Math','Electronics','GEAS','Communication']].mean(axis=1) # Create an average column using the Pandas function .mean with the axis set to one.
+
+    Mindy = Mindy.loc[(Mindy['Gender'] == 'Female') & # Test for entries where Gender is Female.
+                (Mindy['Hometown'] == 'Mindanao') & # Using & (AND), additionally test for entries where Hometown is Mindanao.
+                (Mindy['Average'] > 55) # Finally, using & (AND), additionally check for the entries where average grade is greater than 55. 
+                , ['Name', 'Track', 'Electronics', 'Average']] # Formatting options to match sample output.
+
+    Mindy # Display third Data Frame
+```
 2. PROBLEM 2
-- For the second problem, we once again import and read like in problem 1. Once we have them we can deal with the first case.
+-  Problem 2 is quite a bit trickier, I initially wanted to use a pairplot graph but I was under the impression that I would have to complete the PA4 before the 1 hour 30 minute time limit so in my haste I opted for a bar graph with minimal design. However, in future versions I will most likely opt into using a pairplot instead of a bar graph. Either way, the first step for the problem was again copying from the original df data frame to avoid editing the original and adding the average just as we did before.
 ```
-    # Problem 2 - Subsetting, slicing, indexing
-    # Library Import
-    import pandas as pd
+    # Copy Snippet
+    V = df.copy() # Create a copy of the base DataFrame to avoid creating columns that do not exist in the original data set.
+    V['Average'] = df[['Math','Electronics','GEAS','Communication']].mean(axis=1) # Create an average column using the Numpy function .mean with the axis set to one.
+```
+- However, the problem requires us to find a correlation between the features of Gender, Track, and Hometown to the students final grade. Doing a cursory search on the internet and through our cheat sheets led me to the Pandas documentation website:
 
-    # Importing from file Snippet
-    cars = pd.read_csv('cars.csv') # Using the pd.read_csv function we can read our    csv file and convert it into a DataFrame and we can save it under the name cars.    
+https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html
+https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html#pandas.factorize
+https://pandas.pydata.org/docs/dev/reference/api/pandas.DataFrame.corrwith.html#pandas.DataFrame.corrwith
+
+- Through these resources I opted to create a Pearson's correlation value for each of the categories using the .corrwith function. However, I initially ran into issues as the values were not intgers. This is where I learned the .apply function in the cheat sheets and the factorize function in the Pandas documentation, which converts non-integer values into indexed values that can be used with the .corrwith function. Once I had my correlation values I simply displayed the function for us to get a better understanding of what the correlation values are and what values are attached to them.
 ```
-- For part a, we can simply use .iloc() and use slices to indicate our m and n values in the iloc. Since we need the first 5 columns, we can simply use 0:5 to get the values from index 0 to 5. As for the odd values part, we can simply use a slice of ::2 which basically means to scan the whole DataFrame using 2 as an increment, effectively skipping all even numbered columns.
+    # Getting correlation values:
+    Cor = V[['Gender', 'Track', 'Hometown']].apply(lambda x: pd.factorize(x)[0]).corrwith(V['Average'])
+
+    # Breakdown:
+        # V[['Gender', 'Track', 'Hometown']] -  Select only the focus features (Gender, Track, Hometown)
+        # .apply(lambda x: pd.factorize(x)[0]) - Since we're dealing with non-integer values in trying to construct a correlation table, 
+        #                                        I decided on using the .apply function to utilize the lambda factorization on our values 
+        #                                        to convert them into values that can be compatible with the corrwith Pandas function.
+        # .corrwith(V['Average']) - The corrwith function in Pandas correlates one DataFrame to another, by placing V['Average'] we are 
+        #                           comparing the entirety of the prior Data Frame with its function applied to the average only.
+
+    Cor # Display test case
 ```
-    # Part A Snippet
-    a = cars.iloc[0:5, ::2] # .iloc - gets the value with m row, n column, we simply slice 0:5 which gets only the columns index 0 to 5.
-                            # Next, we use indexing again in the column field but we sinply use ::2 which translates to for the entire DataFrame, 
-                            # but incrementing using 2 to only get the odd numbered values.
-    a # Display test case
+- Again as stated before, I opted to use a bar graph instead of the pairplot I wanted due to my percieved time restraints and so I simply made a new figure and a bar graph.
 ```
-- For part b, we can simply index using .loc searching for any element that equates to 'Mazda RX4' under the column labeled 'Model' in the cars table.
-```
-    # Part B Snippet
-    b = cars.loc[cars['Model'] == 'Mazda RX4'] # We simply use indexing using .loc function with the paramaters of testing all elements of the value column to the target value.
-    b # Display test case
-```
-- For part c, we can use indexing again using loc but we have to display specific columns only. We can simply format the output using the specifiers at the end of ['Model', 'cyl'].
-```
-    # Part C Snippet
-    c = cars.loc[cars['Model'] == 'Camaro Z28', ['Model', 'cyl']] # We use indexing again just like the example above, but we simply only include the model and cylinder count by adding the formatting segment.
-    c # Display test case
-```
-- Finally, for part d we simply use indexing one last time, however we have to use the '|' symbol which in PANDAS is read as 'or' which parallels the behavior of the or function in Python. This allows us to test for multiple cases in one singular .loc function. Once we have our values, we can simply format using specifiers once again.
-```
-    # Part D Snippet
-    d = cars.loc[(cars['Model'] == 'Mazda RX4 Wag') |
-                (cars['Model'] == 'Ford Pantera L') |
-                (cars['Model'] == 'Honda Civic')
-            , ['Model', 'cyl', 'gear']] # Using indexing again, we simply use the 'or' symbol | for Pandas to test for multiple values. 
-                                        # Once we have them, we simply use the same formatting elements as above but including the gear.
-    d # Display test case
+    # Figure Display Snippet
+    plt.figure() # Create a new figure using Matplot lib.
+    fig = plt.bar(Cor.index, Cor.values) # Create a bar graph to show correlation between all values.
 ```
 
 # 📁Directory Navigation📁
@@ -87,16 +95,8 @@ The organization of this repository to get to this file is as follows:
 └── 2112-advprog 📂
     └── assignments 📄
         ├── M2-PA3 🐍
-            └── Rivera_Pandas-P1.ipynb ⭐
-            └── Rivera_Pandas-P1.py ⭐
-            └── Rivera_Pandas-P2.ipynb ⭐
-            └── Rivera_Pandas-P2.ipynb ⭐
-            └── head_Rivera_Pandas-P1.csv 📄
-            └── tail_Rivera_Pandas-P1.csv 📄
-            └── a_Rivera_Pandas-P2.csv 📄
-            └── b_Rivera_Pandas-P2.csv 📄
-            └── c_Rivera_Pandas-P2.csv 📄
-            └── d_Rivera_Pandas-P2.csv 📄
+            └── pa4.ipynb ⭐
+            └── board2.xlsx 📄
             └── readme.md 📖
 ```
 
