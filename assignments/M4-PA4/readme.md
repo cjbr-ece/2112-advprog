@@ -16,7 +16,7 @@ All the problems contained in this files are:
     import numpy as np # Importing numpy library
     import pandas as pd # Importing pandas library
     import matplotlib.pyplot as plt # Importing plotting/visualization library
-
+```
 ```
     # Read from file Snippet
     df = pd.read_excel('board2.xlsx')
@@ -102,6 +102,7 @@ The organization of this repository to get to this file is as follows:
 
 # ⬇️Download Instructions⬇️
 Download or clone this repository to get the files. Then using either Jupyter notebook or through the Jupyter addon on Visual Studio Code, open the file and run the cells of concern.
+
 
 
 
